@@ -1,0 +1,109 @@
+<html lang="en">
+    <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+    <link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+    <style type="text/css" id="dark-mode-custom-style"></style>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <title>VBP Admin - Lokasyon Çıkar</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="/bootstrap.min.css" rel="stylesheet">
+
+        <meta name="theme-color" content="#563d7c">
+        <script src="/jquery.js" type="text/javascript"></script>
+
+        <style>
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-align: center;
+                align-items: top;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                background-color: #f5f5f5;
+            }
+
+        </style>
+    </head>
+    <body class="text-center" data-gr-c-s-loaded="true">
+
+        <div class="container">
+            <h2 class="text-center" id="greet">Viewer table</h2>
+            <div class="row justify-content-md-center">
+                <div class="col" align="center">
+                    <div class="alert alert-success" role="alert" style="display: none;">
+                        Başarılı şekilde güncellendi!
+                    </div>
+                    <form action="" method="GET" class="MyForm">
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="list-group" id="myLocations">
+                                </ul>
+                            </div>
+                            <div class="col-12">&af;</div>
+                            <div class="col-12">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Çıkar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            //let usernameArray = window.location.href.split("/")
+            //let username = usernameArray[usernameArray.length-1] //window.location.href.split("?username=")[1]
+            //$("#myLocations").append(`<input type="text" name="username" value="${username}" hidden>`)
+
+            $("#greet").html("Lokasyon çıkar:")
+
+            function UpdateForm(data){
+                //delete inside $("#myLocations")
+                for(let [rowId, rowData] of Object.entries(data)){
+                    let location = rowData[0];
+                    $("#myLocations").append(
+                        `<li class="list-group-item d-flex justify-content-between align-items-center list-group-item-dark">
+                            ${location} 
+                            <input type="checkbox" name="${location}" aria-label="Something">
+                        </li>`
+                    )
+                }
+                
+                $(".list-group-item").click(function(){
+                    var checkbox = $(this).find("input[type=checkbox]");
+                    if(!checkbox.prop("disabled")){
+                        checkbox.prop("checked", !checkbox.prop("checked"))
+                    }
+                })
+            }
+
+            function CompleteUpdate(){
+                $.post("/admin/locationdata").done(function(data) {
+                    UpdateForm(data)
+                }).fail(function(){
+                    document.location.href = "/admin"
+                })
+            }
+
+            CompleteUpdate();
+
+            $(".MyForm").submit(function(event) {
+                let formData = $(".MyForm").serializeArray();
+
+                $.post("/admin/bulkdeletelocations", formData).done(function() {
+                    $(".alert").show();
+                    //CompleteUpdate();
+                })
+
+                event.preventDefault()
+            })
+        </script>
+    </body>
+</html>

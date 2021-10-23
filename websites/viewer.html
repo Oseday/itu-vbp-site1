@@ -1,0 +1,360 @@
+<html lang="en">
+	<link type="text/css" rel="stylesheet" id="dark-mode-general-link">
+	<link type="text/css" rel="stylesheet" id="dark-mode-custom-link">
+
+	<style type="text/css" id="dark-mode-custom-style"></style>
+	<head>
+		<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="https://verbipati.org/manifest.webmanifest">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+		
+		<meta name="application-name" content="VerBiPati">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="VerBiPati web app for dogs and cats">
+
+		<!-- Bootstrap core CSS -->
+		<link href="https://verbipati.org/bootstrap.min.css" rel="stylesheet">
+
+		<meta name="theme-color" content="#563d7c">
+
+		<style>
+			.hidden{display:none !important}
+
+			html,
+			body {
+				height: 100%;
+			}
+
+			body {
+				display: -ms-flexbox;
+				display: flex;
+				-ms-flex-align: center;
+				-webkit-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				-webkit-touch-callout: none;
+				align-items: top;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				background-color: #f5f5f5;
+			}
+
+		</style>
+
+	</head>
+	<body class="text-center" style="overflow-y: scroll" data-gr-c-s-loaded="true">
+		<div class="container">
+			<title>VerBiPati Denetim</title>
+			<h2 class="text-center" id="greet">Viewer table</h2>
+			<div class="row justify-content-md-center">
+				<div class="col" align="center">
+					<form action="" method="GET" class="MyForm">
+						<div class="row">
+							<div class="col-12">
+								<ul class="list-group" id="myLocations">
+								</ul>
+							</div>
+							<div class="col-12">&af;</div>
+							<div class="col-12">
+								<div class="alert alert-success" id="success" role="alert">
+									Başarılı şekilde güncellendi!
+									<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<div class="alert alert-danger" id="server-error" role="alert">
+									Sunucuda hata oluştu
+									<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<div class="alert alert-warning" id="gettinglocation" role="alert">
+									Lokasyon belirleniyor, izin istenirse lütfen izin veriniz
+								</div>
+								<div class="alert alert-danger" id="location-force-enable" role="alert">
+									Lokasyonunuzu açın ya da ayarlarınızdan lütfen izin verin
+									<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<div class="alert alert-danger" id="location-get-error" role="alert">
+									Lokasyonunuzu alırken bir hata oluştu
+									<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<button class="btn btn-lg btn-primary btn-block" type="submit">Kaydet</button>
+								<button class="btn btn-lg btn-secondary btn-block" id="maplink" type="button">Harita</button>
+								<button class="btn btn-lg btn-secondary btn-block" id="photoslink" type="button">Fotoğraflar</button>
+								<button class="btn btn-lg btn-outline-secondary btn-block" id="download" type="button">Ana sayfaya ekle</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div style="padding-bottom: 0px">Besleme yaptığınız yerde işaretleyip orayı oradayken kaydedin böylece nerede ve ne zaman besleme yaptığınızı teyit edebilelim.</div>
+			<div style="padding-bottom: 5px"> <button class="btn btn-sm btn-link" type="button" id="signout">Çıkış</button> </div>
+		</div>
+
+		<script src="https://verbipati.org/jquery.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js" type="text/javascript"></script>
+		<script src="https://verbipati.org/jscookies.js" type="text/javascript"></script>
+		<script src="https://verbipati.org/getbrowser.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			window.scrollTo(0,1);
+
+			function closeAlerts() {
+				$(".alert").hide();
+				$("#success").click(function() {
+					$("#success").hide();
+				})
+				$("#server-error").click(function() {
+					$("#server-error").hide();
+				})
+				$("#location-force-enable").click(function() {
+					$("#location-force-enable").hide();
+				})
+				$("#location-get-error").click(function() {
+					$("#location-get-error").hide();
+				})
+				$("#download").hide();
+			}
+			closeAlerts();
+
+			$("#greet").html("Beslediğiniz bölgeleri seçiniz:")
+
+			//let usernameArray = window.location.href.split("/")
+			//let username = usernameArray[usernameArray.length-1] //window.location.href.split("?username=")[1]
+			
+			//navigator.serviceWorker.register("/service-worker.js");
+
+			window.addEventListener('beforeinstallprompt', (event) => {
+			  console.log('beforeinstallprompt', event);
+			  // Stash the event so it can be triggered later.
+			  window.deferredPrompt = event;
+			  // Remove the 'hidden' class from the install button container
+			  $("#download").show();//divInstall.classList.toggle('hidden', false);
+			});
+
+			$("#download").click(function() {
+				console.log("start download");
+				const promptEvent = window.deferredPrompt;
+				if (!promptEvent) {
+					// The deferred prompt isn't available.
+					return;
+				}
+				promptEvent.prompt();
+				promptEvent.userChoice.then((result) => {
+					console.log('userChoice', result);
+					// Reset the deferred prompt variable, since
+					// prompt() can only be called once.
+					window.deferredPrompt = null;
+					// Hide the install button.
+					$("#download").hide();//divInstall.classList.toggle('hidden', true);
+				});
+
+			})
+
+
+			let username = getCookie("username");
+
+			console.log(username);
+
+			if (username==null) {
+				//document.location.href = "/";
+			}
+
+			$("#signout").click(function() {
+				setCookie("username","",-1);
+				document.location.href = "/";
+			})
+
+			$("#maplink").click(function() {
+				document.location.href = "/map";
+			})
+
+			$("#photoslink").click(function() {
+				document.location.href = "/photos";
+			})
+
+
+			//$("#myLocations").append(`<input type="text" name="username" value="${username}" hidden>`)
+
+			function geoLocDistance(lat1,lon1,lat2,lon2) {
+				let R = 6371e3; // metres
+				let p1 = lat1 * Math.PI/180; // p, l in radians
+				let p2 = lat2 * Math.PI/180;
+				let dp = (lat2-lat1) * Math.PI/180;
+				let dl = (lon2-lon1) * Math.PI/180;
+
+				let a = Math.sin(dp/2) * Math.sin(dp/2) +
+						Math.cos(p1) * Math.cos(p2) *
+						Math.sin(dl/2) * Math.sin(dl/2);
+				let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+				let d = R * c; // in metres
+				return Math.floor(d+0.5);
+			}
+
+			var locationDataP;
+
+			function GetLocText(rowData,coords) {
+				let locationName = rowData[0]
+				let isChecked = rowData[1]
+				let isDisabled = rowData[2]
+				let occupancy = rowData[3]
+				let datef = rowData[4]
+				let details = rowData[5]
+				let distance = rowData[6]
+				let loccoords = rowData[7]
+				let coordstr = ""
+				if (coords) {
+					let d = geoLocDistance(coords.longitude,coords.latitude,loccoords.longitude,loccoords.latitude)
+					coordstr = d>900 ? "900m" : d+"m"
+				}
+				let ls = ""
+				if (isChecked) {
+					ls = `<d>${locationName}<i><small>  ${details}  (${occupancy}) ${datef} ${distance}</small></i></d>`
+				}else{
+					ls = `<d>${locationName}<i><small>  ${details} ${coordstr}</small></i></d>`
+				}
+
+				let button = `<input type="checkbox" name="${locationName}" class="ml-auto" aria-label="Something" ${(isDisabled ? " disabled" : "")} ${(isChecked ? " checked" : "")}>`
+
+				return ls + button
+			}
+
+			function UpdateForm(data,coords){
+				$("#myLocations").empty();
+				locationDataP = data;
+				for(let [rowId, rowData] of Object.entries(data)){
+					let locationName = rowData[0]
+					let isChecked = rowData[1]
+					let isDisabled = rowData[2]
+					let occupancy = rowData[3]
+					let datef = rowData[4]
+					let details = rowData[5]
+					let distance = rowData[6]
+					
+					let stradd = GetLocText(rowData,coords)
+
+					$("#myLocations").append(
+						`<li class="list-group-item d-flex align-items-center list-group-item-dark">
+							${stradd}
+						</li>`
+					)
+				}
+				
+				$(".list-group-item").click(function(){
+					let checkbox = $(this).find("input[type=checkbox]");
+					if(!checkbox.prop("disabled")){
+						checkbox.prop("checked", !checkbox.prop("checked"))
+					}
+				})
+
+				$(".ml-auto").click(function(){
+					let checkbox = $(this).find("input[type=checkbox]");
+					if(!checkbox.prop("disabled")){
+						checkbox.prop("checked", !checkbox.prop("checked"))
+					}
+				})
+
+			}
+
+			$.post("https://verbipati.org/viewer/tabledata", {username: username}).done(function(data) {
+				UpdateForm(data)
+			}).fail(function(){
+				setCookie("username","",-1);
+				document.location.href = "/";
+			})
+
+			function submitRequest(pos){
+
+				$("#gettinglocation").hide();
+
+				let formData = $(".MyForm").serializeArray();
+
+				let posttab = {
+					data: formData,
+					username: username,
+					pos: {
+						latitude: pos.coords.latitude, 
+						longitude: pos.coords.longitude
+					}
+				}
+
+				$.ajax({
+					type: "POST",
+					url: "/viewer/tablesubmit",
+					data: JSON.stringify(posttab),
+					contentType: 'application/json'
+				}).done(function() {
+					$("#success").show();
+				}).fail(function(){
+					$("#server-error").show();
+				})
+
+
+				/*
+				$.post("/viewer/tablesubmit", stringpost).done(function() {
+					$("#success").show();
+				}).fail(function(){
+					$("#server-error").show();
+				})
+				*/
+			}
+
+			function geoError(err) {
+				console.warn(err);
+				$("#gettinglocation").hide();
+				$("#location-get-error").show();
+			}
+
+			let geoOptions = {
+				timeout:4000,
+				maximumAge:10000,
+				enableHighAccuracy: true
+			}
+
+			if (isFirefox){
+				geoOptions.enableHighAccuracy = false;
+				geoOptions.timeout = 10000;
+				geoOptions.maximumAge = 20000;
+			}
+
+			function Tracker(geoloc) {
+				$(".list-group-item").each(function(index) {
+					let rowData = locationDataP[index]
+					let htmlc = GetLocText(rowData,geoloc.coords)
+					console.log(geoloc)
+					$(this).html(htmlc)
+				})
+			}
+
+			//watchPosition disabled for now
+			//navigator.geolocation.watchPosition(Tracker,geoError,geoOptions)
+
+			function sendForm(){
+				$("#location-force-enable").show();
+				if (navigator.geolocation) {
+					$("#location-force-enable").hide();
+					$("#gettinglocation").show();
+					navigator.geolocation.getCurrentPosition(submitRequest,geoError,geoOptions);
+				} else {
+					//submitRequest({coords:{latitude:0,longitude:0}})
+				}
+			}
+
+			$(".MyForm").submit(function(event) {
+				sendForm()
+				event.preventDefault()
+			})
+		</script>
+	</body>
+</html>
