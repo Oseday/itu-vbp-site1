@@ -30,7 +30,7 @@ Codes: ``200`` OR ``400``
 `` {"username": username_string} ``
 
 ###### RESPONSE 
-```json
+```jsonc
 [[Location, isChecked, isDisabled, Occupant, Date, Details, Dist, Pos, ID], ...]
 ```
 
@@ -44,7 +44,7 @@ You get the table data from this.
 
 
 ###### RESPONSE 
-```json
+```jsonc
 [{
 	"loc": Location, //string: name of the location
 	"checked": isChecked, //bool: whether button was checked
@@ -63,7 +63,7 @@ You get the table data from this.
 You submit the changes to this.
 
 ###### REQUEST 
-```json 
+```jsonc 
 {
 	"username": username, //string
 	"pos": {
@@ -133,7 +133,7 @@ Code: ``200`` or some error
 Gets the meta data of a location.
 
 ###### RESPONSE 
-```JSON
+```JSONc
 {
 	"location_name": {
 		"animal_name":["someimage.png", "JH0SWGSwsd.jpg", ...]
