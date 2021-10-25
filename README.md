@@ -2,6 +2,8 @@
 
 ## GENERAL:
 
+GET requests are cached by the Amazon CDN (CloudFront) so we use POST requests when we want to get stuff that we don't want the response to be cached.
+
 The folder ./websites/ is statically served.
 
 ### GET /
@@ -46,14 +48,14 @@ You get the table data from this.
 ###### RESPONSE 
 ```jsonc
 [{
-	"loc": Location, //string: name of the location
+	"loc": Location, //string: readable name of the location
 	"checked": isChecked, //bool: whether button was checked
 	"disabled": isDisabled, //bool: whether this user can check it or not
 	"occupancy": OccupantName, //string: who checked the button
 	"date": Date, //string: date when it was checked
 	"details": Details, //string: small details about the location
 	"dist": Dist, //string: distance 
-	"id": ID //string: unique id of the place
+	"id": ID //string: unique id of the place, used on the URLs
 }, ...]
 ```
 
